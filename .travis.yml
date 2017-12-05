@@ -8,4 +8,4 @@ script:
     - ls -lisa
     - cd build && cmake ..
     - make
-    #- make test
+    - make test
