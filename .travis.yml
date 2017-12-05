@@ -2,10 +2,14 @@ language: cpp
 
 compiler: gcc
 
+install:
+    - apt-get update -y
+    - apt-get upgrade -y
 
 script:
     - mkdir build
     - pwd
+    - ls -lisa
     - cd build && cmake ..
     - cd build && make
     - cd build && make test
