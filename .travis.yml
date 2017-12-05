@@ -7,5 +7,5 @@ script:
     - pwd
     - ls -lisa
     - cd build && cmake ..
-    - cd build && make
-    - cd build && make test
+    - make
+    #- make test
