@@ -2,10 +2,6 @@ language: cpp
 
 compiler: gcc
 
-install:
-    - sudo apt-get update -y
-    - sudo apt-get upgrade -y
-
 script:
     - mkdir build
     - pwd
