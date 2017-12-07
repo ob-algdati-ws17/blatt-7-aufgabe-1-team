@@ -25,7 +25,7 @@ private:
 public:
     bool testTesting();
 
-    //~BinTree();
+
 
     bool search(const int) const;
 

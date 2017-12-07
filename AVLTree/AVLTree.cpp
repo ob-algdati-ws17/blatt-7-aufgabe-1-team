@@ -12,9 +12,7 @@ AVLTree::Node::Node(const int k) : key(k) {}
 
 AVLTree::Node::Node(const int k, AVLTree::Node *l, AVLTree::Node *r) : key(k), left(l), right(r) {}
 
-AVLTree::~BinTree() {
 
-}
 
 bool AVLTree::search(const int value) const {
     if(root->key == value)
