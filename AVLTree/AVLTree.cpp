@@ -36,7 +36,6 @@ bool AVLTree::search(const int value) const {
         }
         if (pos->key == value)
             return true;
-
     }
 }
 
