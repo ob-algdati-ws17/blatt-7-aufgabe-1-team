@@ -13,7 +13,7 @@ private:
         Node *right;
         Node *prev;
         int key;
-        int balance;
+        int height;
 
         Node(const int);
         Node(const int, Node *, Node *);
