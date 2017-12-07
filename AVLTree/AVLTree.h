@@ -7,8 +7,31 @@
 
 
 class AVLTree {
+private:
+    struct Node{
+        Node *left;
+        Node *right;
+        Node *prev;
+        int key;
+        int balance;
+
+        Node(const int);
+        Node(const int, Node *, Node *);
+
+    };
+
+    Node *root = nullptr;
+
 public:
     bool testTesting();
+
+    ~BinTree();
+
+    bool search(const int) const;
+
+    void insert(const int);
+
+    void remove(const int);
 };
 
 
