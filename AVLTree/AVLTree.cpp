@@ -3,6 +3,7 @@
 //
 
 #include "AVLTree.h"
+#include <iostream>
 
 bool AVLTree::testTesting() {
     return true;
@@ -43,7 +44,7 @@ void AVLTree::insert(const int value) {
     if(root == nullptr) {
         auto newNode = new Node(value);
         root = newNode;
-        root->height = 1;
+        root->balance = 0;
         return ;
     }
 
@@ -53,39 +54,42 @@ void AVLTree::insert(const int value) {
         if (value < pos->key) {
             if (pos->left == nullptr) {
                 auto newNode = new Node(value);
-                newNode->height = 1;
                 newNode->prev = pos;
                 pos->left = newNode;
-                if(newNode->prev->right == nullptr) {
-                    auto helperPos = newNode->prev;
-                    while(helperPos != root) {
-                        helperPos->height++;
-                        helperPos = helperPos->prev;
-                    }
-                    helperPos->height++;
-                }
-                return;
+                newNode->balance = 0;
+                calcBalance(pos->left);
             }
             pos = pos->left;
         } else {
             if (pos->right == nullptr) {
-                auto newNode = new Node(value);
-                newNode->height = 1;
-                newNode->prev = pos;
-                pos->right = newNode;
-                if(newNode->prev->left == nullptr) {
-                    auto helperPos = newNode->prev;
-                    while(helperPos != root) {
-                        helperPos->height++;
-                        helperPos = helperPos->prev;
-                    }
-                    helperPos->height++;
-                }
-                return;
+            auto newNode = new Node(value);
+            newNode->prev = pos;
+            pos->right = newNode;
+            newNode->balance = 0;
+            calcBalance(pos->right);
             }
             pos = pos->right;
         }
     }
+}
+
+void AVLTree::calcBalance(AVLTree::Node *newElement) {
+    auto pos = newElement;
+    while(pos != root) {
+        if (pos == pos->prev->left) {
+            pos->prev->balance--;
+        } else {
+            pos->prev->balance++;
+        }
+        if(pos->prev->balance == 0)
+            break;
+        pos = pos->prev;
+    }
+    upin(newElement);
+}
+
+void AVLTree::upin(AVLTree::Node *newElement) {
+
 }
 
 void AVLTree::remove(const int) {

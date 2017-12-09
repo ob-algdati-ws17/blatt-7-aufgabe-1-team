@@ -13,7 +13,7 @@ private:
         Node *right;
         Node *prev;
         int key;
-        int height;
+        int balance;
 
         Node(const int);
         Node(const int, Node *, Node *);
@@ -25,7 +25,9 @@ private:
 public:
     bool testTesting();
 
+    void calcBalance(Node*);
 
+    void upin(Node*);
 
     bool search(const int) const;
 
