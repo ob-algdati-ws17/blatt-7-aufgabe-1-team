@@ -13,7 +13,13 @@ AVLTree::Node::Node(const int k) : key(k), left(nullptr), right(nullptr), prev(n
 
 AVLTree::Node::Node(const int k, AVLTree::Node *l, AVLTree::Node *r) : key(k), left(l), right(r) {}
 
+bool AVLTree::isEmpty() {
+    if(root == nullptr)
+        return true;
+    else
+        return false;
 
+}
 
 bool AVLTree::search(const int value) const {
     if(root->key == value)
@@ -89,6 +95,38 @@ void AVLTree::calcBalance(AVLTree::Node *newElement) {
 }
 
 void AVLTree::upin(AVLTree::Node *newElement) {
+    auto pos = newElement;
+    auto prevPos = newElement->prev;
+
+    while(pos != root) {
+        if(prevPos->balance == 2 && pos->balance == 1){
+            rotateLeft(prevPos);
+        }
+        if(prevPos->balance == 2 && pos->balance == -1){
+            rotateLeft(pos);
+            rotateRight(prevPos);
+        }
+        if(prevPos->balance == -2 && pos->balance == 1){
+            rotateLeft(pos);
+            rotateRight(prevPos);
+        }
+        if(prevPos->balance == -2 && pos->balance == -1){
+            rotateRight(prevPos);
+        }
+        prevPos = prevPos->prev;
+        pos = pos->prev;
+    }
+}
+
+void AVLTree::rotateLeft(AVLTree::Node *pos) {
+    auto helper = pos->right;
+    helper->left = pos;
+    pos->prev = helper;
+    pos->right = nullptr;
+    root = helper;
+}
+
+void AVLTree::rotateRight(AVLTree::Node *pos) {
 
 }
 

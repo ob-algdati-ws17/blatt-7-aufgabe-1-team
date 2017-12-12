@@ -23,11 +23,18 @@ private:
     Node *root = nullptr;
 
 public:
+
+    bool isEmpty();
+
     bool testTesting();
 
     void calcBalance(Node*);
 
     void upin(Node*);
+
+    void rotateLeft(Node*);
+
+    void rotateRight(Node*);
 
     bool search(const int) const;
 
