@@ -20,8 +20,10 @@ bool AVLTree::isEmpty() {
         return false;
 
 }
-
+//problem bei suche in leerem baum
 bool AVLTree::search(const int value) const {
+    if(root == nullptr)
+        return false;
     if(root->key == value)
         return true;
 
@@ -101,6 +103,7 @@ void AVLTree::upin(AVLTree::Node *newElement) {
     while(pos != root) {
         if(prevPos->balance == 2 && pos->balance == 1){
             rotateLeft(prevPos);
+            break;
         }
         if(prevPos->balance == 2 && pos->balance == -1){
             rotateLeft(pos);
@@ -123,7 +126,10 @@ void AVLTree::rotateLeft(AVLTree::Node *pos) {
     helper->left = pos;
     pos->prev = helper;
     pos->right = nullptr;
+    helper->prev = nullptr;
     root = helper;
+
+
 }
 
 void AVLTree::rotateRight(AVLTree::Node *pos) {
