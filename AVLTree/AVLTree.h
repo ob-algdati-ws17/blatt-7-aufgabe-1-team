@@ -24,6 +24,8 @@ private:
 
 public:
 
+    int height(Node*);
+
     bool isEmpty();
 
     bool testTesting();

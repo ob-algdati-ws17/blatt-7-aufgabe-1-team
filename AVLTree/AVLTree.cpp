@@ -96,6 +96,19 @@ void AVLTree::calcBalance(AVLTree::Node *newElement) {
     upin(newElement);
 }
 
+int AVLTree::height(AVLTree::Node *node) {
+    if(node== nullptr)
+        return 0;
+    else {
+        auto left = height(node->left) + 1;
+        auto right = height(node->right) + 1;
+        if(right >= left)
+            return right;
+        else
+            return left;
+    }
+}
+
 void AVLTree::upin(AVLTree::Node *newElement) {
     auto pos = newElement;
     auto prevPos = newElement->prev;
@@ -123,12 +136,27 @@ void AVLTree::upin(AVLTree::Node *newElement) {
 
 void AVLTree::rotateLeft(AVLTree::Node *pos) {
     auto helper = pos->right;
-    helper->left = pos;
-    pos->prev = helper;
-    pos->right = nullptr;
-    helper->prev = nullptr;
-    root = helper;
+    auto helper2 = helper->left;
+    auto prevHelper = pos->prev;
+    pos->right = helper2;
+    if(helper2 != nullptr)
+        helper2->prev = pos;
 
+    helper->left = pos;
+    if(pos != root)
+        pos->prev->right = helper;
+    pos->prev = helper;
+
+    if(pos == root) {
+        helper->prev = nullptr;
+        root = helper;
+    } else {
+        helper->prev = prevHelper;
+    }
+
+    helper->balance = height(helper->right) - height(helper->left);
+    helper->right->balance = height(helper->right->right) - height(helper->right->left);
+    helper->left->balance = height(helper->left->right) - height(helper->left->left);
 
 }
 
