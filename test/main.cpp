@@ -7,9 +7,12 @@
 int main(int argc, char **argv) {
 
     AVLTree *tree = new AVLTree();
-    tree->insert(30);
-    tree->insert(50);
-    tree->insert(60);
+    tree->insert(5);
+    tree->insert(6);
+    tree->insert(13);
+    tree->insert(12);
+    tree->insert(11);
+    tree->insert(10);
 
 
     return 0;

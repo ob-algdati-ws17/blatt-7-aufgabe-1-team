@@ -116,11 +116,11 @@ void AVLTree::upin(AVLTree::Node *newElement) {
     while(pos != root) {
         if(prevPos->balance == 2 && pos->balance == 1){
             rotateLeft(prevPos);
-            break;
+
         }
         if(prevPos->balance == 2 && pos->balance == -1){
-            rotateLeft(pos);
-            rotateRight(prevPos);
+            rotateRight(pos);
+            rotateLeft(prevPos);
         }
         if(prevPos->balance == -2 && pos->balance == 1){
             rotateLeft(pos);
@@ -128,9 +128,13 @@ void AVLTree::upin(AVLTree::Node *newElement) {
         }
         if(prevPos->balance == -2 && pos->balance == -1){
             rotateRight(prevPos);
+
         }
         prevPos = prevPos->prev;
-        pos = pos->prev;
+        if(pos->prev != nullptr)
+            pos = pos->prev;
+        else
+            break;
     }
 }
 
@@ -143,9 +147,15 @@ void AVLTree::rotateLeft(AVLTree::Node *pos) {
         helper2->prev = pos;
 
     helper->left = pos;
-    if(pos != root)
-        pos->prev->right = helper;
+    if(pos != root) {
+        if(prevHelper->right == pos)
+            prevHelper->right = helper;
+        else
+            prevHelper->left = helper;
+    }
+
     pos->prev = helper;
+
 
     if(pos == root) {
         helper->prev = nullptr;
@@ -161,7 +171,40 @@ void AVLTree::rotateLeft(AVLTree::Node *pos) {
 }
 
 void AVLTree::rotateRight(AVLTree::Node *pos) {
+    auto helper = pos->left;
+    auto helper2 = helper->right;
+    auto prevHelper = pos->prev;
+    pos->left = helper2;
+    if(helper2 != nullptr)
+        helper2->prev = pos;
 
+    helper->right = pos;
+    if(pos != root) {
+        if(prevHelper->right == pos)
+            prevHelper->right = helper;
+        else
+            prevHelper->left = helper;
+    }
+    pos->prev = helper;
+
+
+    if(pos == root) {
+        helper->prev = nullptr;
+        root = helper;
+    } else {
+        helper->prev = prevHelper;
+    }
+
+    helper->right->balance = height(helper->right->right) - height(helper->right->left);
+    helper->left->balance = height(helper->left->right) - height(helper->left->left);
+    helper->balance = height(helper->right) - height(helper->left);
+    auto balHelper = helper;
+    while(balHelper != root) {
+        balHelper->balance = height(balHelper->right) - height(balHelper->left);
+        balHelper = balHelper->prev;
+    }
+
+    balHelper->balance = height(balHelper->right) - height(balHelper->left);
 }
 
 void AVLTree::remove(const int) {
