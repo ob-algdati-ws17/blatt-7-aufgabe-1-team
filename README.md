@@ -1,4 +1,6 @@
 https://github.com/ob-algdati-ws17/blatt-7-aufgabe-1-team
+https://github.com/SimonPreisinger
+https://github.com/LorMun
 
 # Algorithmen und Datenstrukturen I:
 
