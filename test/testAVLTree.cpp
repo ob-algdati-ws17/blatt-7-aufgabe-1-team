@@ -4,6 +4,7 @@
 
 #include "testAVLTree.h"
 #include <iostream>
+#include "stdlib.h"
 
 using namespace std;
 
@@ -13,30 +14,41 @@ TEST(AVLTest, Check_if_testing_works) {
     EXPECT_TRUE(tree.testTesting());
 }
 
-// empty list
+// empty tree
 TEST(AVLTest, Test_EmptyList) {
     AVLTree tree;
     EXPECT_TRUE(tree.isEmpty());
+    EXPECT_EQ(nullptr, tree.preorder());
+    EXPECT_EQ(nullptr, tree.inorder());
+    EXPECT_EQ(nullptr, tree.postorder());
 }
 
-
-TEST(AVLTest, SearchTest_NoElementInAVLTree) {
+TEST(AVLTest, SearchTest_NoNodeInAVLTree) {
     AVLTree tree;
     EXPECT_TRUE(tree.isEmpty());
+    EXPECT_EQ(nullptr, tree.preorder());
     EXPECT_EQ(0, tree.search(6));
+    EXPECT_EQ(nullptr, tree.inorder());
+    EXPECT_EQ(0, tree.search(5));
+    EXPECT_EQ(nullptr, tree.postorder());
+    EXPECT_EQ(0, tree.search(7));
 }
 
-
 // insert and search
-TEST(AVLTest, SearchTest_OneElementInAVLTree) {
+TEST(AVLTest, SearchTest_OneNodeInAVLTree) {
     AVLTree tree;
     tree.insert(3);
     EXPECT_FALSE(tree.isEmpty());
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(3));
     EXPECT_EQ(1, tree.search(3));
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(3));
+    EXPECT_EQ(0, tree.search(5));
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(3));
+    EXPECT_EQ(0, tree.search(7));
 }
 
 // search test two elements in AVLTree
-TEST(AVLTest, SearchTest_TwoElementsInAVLTree) {
+TEST(AVLTest, SearchTest_TwoNodeInAVLTree) {
     AVLTree tree;
     tree.insert(2);
     EXPECT_FALSE(tree.isEmpty());
@@ -47,7 +59,7 @@ TEST(AVLTest, SearchTest_TwoElementsInAVLTree) {
 }
 
 // insert two elements with same Key
-TEST(AVLTest, InsertTest_TwoSameElementsInAVLTree) {
+TEST(AVLTest, InsertTest_TwoSameNodesInAVLTree) {
     AVLTree tree;
     tree.insert(4);
     tree.insert(4);
@@ -69,5 +81,58 @@ TEST(AVLTest, Three_Nodes) {
 }
 
 
+
+TEST(AVLTest, Two_Nodes_Insert_Remove){
+    AVLTree tree;
+    tree.insert(94344);
+    tree.insert(-2334);
+    EXPECT_TRUE(tree.search(94344));
+    EXPECT_TRUE(-2334);
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(94344, -2334));
+    EXPECT_THAT(*tree.inorder(), testing::ElementsAre(-2334, 94344));
+}
+
+
+/*
+TEST(AVLTest, One_Node_Insert_Remove){
+    AVLTree tree;
+    tree.insert(55789);
+    EXPECT_TRUE(tree.search(55789));
+    EXPECT_FALSE(tree.search(557));
+    EXPECT_FALSE(tree.search(-557));
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(55789));
+    EXPECT_THAT(*tree.inorder(), testing::ElementsAre(55789));
+    EXPECT_THAT(*tree.postorder(), testing::ElementsAre(55789));
+    tree.remove(55789);
+    EXPECT_EQ(nullptr, tree.preorder());
+    EXPECT_EQ(nullptr, tree.inorder());
+    EXPECT_EQ(nullptr, tree.postorder());
+}
+ */
+
+TEST(AVLTest, FiveThousand_Nodes_Insert){
+    AVLTree tree;
+
+    for(int i = 5; i < 10; i++)
+    {
+        tree.insert(i);
+        cout << i << " ";
+    }
+    cout << endl;
+
+    /*
+    for(int k = 0; k < 5; k++)
+    {
+        cout << k << " ";
+        tree.insert(k);
+    }
+     */
+     /*
+    for(int i = 0; i < 5000; i++)
+    {
+        EXPECT_TRUE(tree.search(i));
+    }
+     */
+}
 
 
