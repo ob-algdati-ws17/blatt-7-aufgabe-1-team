@@ -19,13 +19,13 @@ TEST(AVLTest, Test_EmptyList) {
     EXPECT_TRUE(tree.isEmpty());
 }
 
-/*
+
 TEST(AVLTest, SearchTest_NoElementInAVLTree) {
     AVLTree tree;
     EXPECT_TRUE(tree.isEmpty());
     EXPECT_EQ(0, tree.search(6));
 }
- */
+
 
 // insert and search
 TEST(AVLTest, SearchTest_OneElementInAVLTree) {
@@ -53,4 +53,21 @@ TEST(AVLTest, InsertTest_TwoSameElementsInAVLTree) {
     tree.insert(4);
     EXPECT_EQ(1, tree.search(4));
 }
+
+
+TEST(AVLTest, Three_Nodes) {
+    AVLTree tree;
+    tree.insert(12213);
+    tree.insert(215);
+    tree.insert(123712);
+    EXPECT_TRUE(tree.search(12213));
+    EXPECT_TRUE(tree.search(123712));
+    EXPECT_TRUE(tree.search(215));
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(12213, 215, 123712));
+    EXPECT_THAT(*tree.inorder(), testing::ElementsAre(215, 12213, 123712));
+    EXPECT_THAT(*tree.postorder(), testing::ElementsAre(215, 123712, 12213));
+}
+
+
+
 

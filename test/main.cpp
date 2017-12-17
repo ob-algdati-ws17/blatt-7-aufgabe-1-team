@@ -6,6 +6,9 @@
 
 int main(int argc, char **argv) {
 
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+
     AVLTree *tree = new AVLTree();
     tree->insert(5);
     tree->insert(6);
@@ -17,7 +20,5 @@ int main(int argc, char **argv) {
 
     return 0;
 
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
 
 }
