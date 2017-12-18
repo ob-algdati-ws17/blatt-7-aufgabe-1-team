@@ -57,7 +57,7 @@ void AVLTree::insert(const int value) {
     }
 
     while (true) {
-        if (pos->key == value)
+        if (pos == nullptr || pos->key == value)
             return;
         if (value < pos->key) {
             if (pos->left == nullptr) {
@@ -164,9 +164,19 @@ void AVLTree::rotateLeft(AVLTree::Node *pos) {
         helper->prev = prevHelper;
     }
 
-    helper->balance = height(helper->right) - height(helper->left);
-    helper->right->balance = height(helper->right->right) - height(helper->right->left);
+    if(helper->right != nullptr)
+        helper->right->balance = height(helper->right->right) - height(helper->right->left);
+
+    if(helper->left != nullptr)
     helper->left->balance = height(helper->left->right) - height(helper->left->left);
+    helper->balance = height(helper->right) - height(helper->left);
+    auto balHelper = helper;
+    while(balHelper != root) {
+        balHelper->balance = height(balHelper->right) - height(balHelper->left);
+        balHelper = balHelper->prev;
+    }
+
+    balHelper->balance = height(balHelper->right) - height(balHelper->left);
 
 }
 
@@ -195,8 +205,11 @@ void AVLTree::rotateRight(AVLTree::Node *pos) {
         helper->prev = prevHelper;
     }
 
-    helper->right->balance = height(helper->right->right) - height(helper->right->left);
-    helper->left->balance = height(helper->left->right) - height(helper->left->left);
+    if(helper->right != nullptr)
+        helper->right->balance = height(helper->right->right) - height(helper->right->left);
+
+    if(helper->left != nullptr)
+        helper->left->balance = height(helper->left->right) - height(helper->left->left);
     helper->balance = height(helper->right) - height(helper->left);
     auto balHelper = helper;
     while(balHelper != root) {
