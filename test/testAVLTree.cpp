@@ -120,13 +120,13 @@ TEST(AVLTest, FiveThousand_Nodes_Insert){
     }
     cout << endl;
 
-    /*
+
     for(int k = 0; k < 5; k++)
     {
         cout << k << " ";
         tree.insert(k);
     }
-     */
+
      /*
     for(int i = 0; i < 5000; i++)
     {

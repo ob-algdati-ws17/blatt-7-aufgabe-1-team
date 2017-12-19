@@ -4,7 +4,9 @@
 
 #include "AVLTree.h"
 #include <iostream>
-
+/*
+ * Just a function to check if Googletests are working
+ */
 bool AVLTree::testTesting() {
     return true;
 }
@@ -13,14 +15,16 @@ AVLTree::Node::Node(const int k) : key(k), left(nullptr), right(nullptr), prev(n
 
 AVLTree::Node::Node(const int k, AVLTree::Node *l, AVLTree::Node *r) : key(k), left(l), right(r) {}
 
+/*
+ * Checks if the tree is empty
+ */
 bool AVLTree::isEmpty() {
-    if(root == nullptr)
-        return true;
-    else
-        return false;
-
+    return root == nullptr;
 }
 
+/*
+ * searches for a given value. If it is found in the tree true is beeing returned
+ */
 bool AVLTree::search(const int value) const {
     if(root == nullptr)
         return false;
@@ -46,6 +50,12 @@ bool AVLTree::search(const int value) const {
     }
 }
 
+/*
+ * The start of the insert routine
+ * At first the position pointer is moved through the tree. It*s aim is to reach
+ * the place where the new Node will be added.
+ * If the right position is found the node gets added and the balances of the tree will be calculated
+ */
 void AVLTree::insert(const int value) {
     auto pos = root;
 
@@ -81,6 +91,12 @@ void AVLTree::insert(const int value) {
     }
 }
 
+/*
+ * This method is called after the new Node is added.
+ * The positionpointer runs from the new Node to the root.
+ * Depending of the side (right or left) the positionpointer is coming
+ * the balance will be increased or decreased by 1
+ */
 void AVLTree::calcBalance(AVLTree::Node *newElement) {
     auto pos = newElement;
     while(pos != root) {
@@ -96,6 +112,9 @@ void AVLTree::calcBalance(AVLTree::Node *newElement) {
     upin(newElement);
 }
 
+/*
+ * Used to get the height of the left and the right son
+ */
 int AVLTree::height(AVLTree::Node *node) {
     if(node== nullptr)
         return 0;
@@ -109,6 +128,10 @@ int AVLTree::height(AVLTree::Node *node) {
     }
 }
 
+/*
+ * checks if the tree is a valid AVL tree.
+ * depending of the balances rotations are called
+ */
 void AVLTree::upin(AVLTree::Node *newElement) {
     auto pos = newElement;
     auto prevPos = newElement->prev;
@@ -138,6 +161,10 @@ void AVLTree::upin(AVLTree::Node *newElement) {
     }
 }
 
+/*
+ * makes a left rotate
+ * afterwards the heights are checked and balances are calculated
+ */
 void AVLTree::rotateLeft(AVLTree::Node *pos) {
     auto helper = pos->right;
     auto helper2 = helper->left;
@@ -180,6 +207,10 @@ void AVLTree::rotateLeft(AVLTree::Node *pos) {
 
 }
 
+/*
+ * makes a right rotate
+ * afterwards the heights are checked and balances are calculated
+ */
 void AVLTree::rotateRight(AVLTree::Node *pos) {
     auto helper = pos->left;
     auto helper2 = helper->right;
