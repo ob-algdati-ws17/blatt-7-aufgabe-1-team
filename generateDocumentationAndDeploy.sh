@@ -44,10 +44,10 @@ mkdir code_docs
 cd code_docs
 
 # Get the current gh-pages branch
-
+echo '1'
 git clone -b gh-pages $GH_REPO_REF
 cd $GH_REPO_NAME
-
+echo '2'
 
 ##### Configure git.
 # Set the push default to simple i.e. push only the current branch.
@@ -62,7 +62,7 @@ git config user.email "travis@travis-ci.org"
 # can be safely cleaned, and it is sure that everything pushed later is the new
 # documentation.
 rm -rf *
-
+echo '3'
 # Need to create a .nojekyll file to allow filenames starting with an underscore
 # to be seen on the gh-pages site. Therefore creating an empty .nojekyll file.
 # Presumably this is only needed when the SHORT_NAMES option in Doxygen is set
