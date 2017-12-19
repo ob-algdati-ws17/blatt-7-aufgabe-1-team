@@ -11,7 +11,7 @@ branches:
 env:
   global:
     - GH_REPO_NAME: blatt-7-aufgabe-1-team
-    - DOXYFILE: $TRAVIS_BUILD_DIR/<path_to_your_doxygen_configuration_file>
+    - DOXYFILE: $TRAVIS_BUILD_DIR/DoxyfileAVLTreeConfig
     - GH_REPO_REF: https://github.com/ob-algdati-ws17/blatt-7-aufgabe-1-team
 
 # Install dependencies
