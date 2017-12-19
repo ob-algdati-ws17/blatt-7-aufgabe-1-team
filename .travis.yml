@@ -2,6 +2,28 @@ language: cpp
 
 compiler: gcc
 
+# Blacklist
+branches:
+  except:
+    - gh-pages
+    
+# Environment variables
+env:
+  global:
+    - GH_REPO_NAME: blatt-7-aufgabe-1-team
+    - DOXYFILE: $TRAVIS_BUILD_DIR/<path_to_your_doxygen_configuration_file>
+    - GH_REPO_REF: https://github.com/ob-algdati-ws17/blatt-7-aufgabe-1-team
+
+# Install dependencies
+addons:
+  apt:
+    packages:
+      - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
+      
 script:
     - mkdir build
     - pwd
@@ -9,3 +31,9 @@ script:
     - cd build && cmake ..
     - make
     - make test
+    
+# Generate and deploy documentation
+after_success:
+  - cd $TRAVIS_BUILD_DIR
+  - chmod +x generateDocumentationAndDeploy.sh
+  - ./generateDocumentationAndDeploy.sh
