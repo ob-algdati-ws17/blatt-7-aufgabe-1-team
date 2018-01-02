@@ -50,9 +50,13 @@ public:
 
     void remove(const int);
 
+    void upout(Node*, const int);
+
     vector<int> *preorder() const; // Hauptreihenfolge
     vector<int> *inorder() const; // Symmetrische Reihenfolge
     vector<int> *postorder() const; // Nebenreihenfolge
+
+
 };
 
 

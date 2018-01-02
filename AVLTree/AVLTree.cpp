@@ -50,9 +50,13 @@ bool AVLTree::search(const int value) const {
     }
 }
 
+/////////////////////////////////////////////////////////////////////////
+/////////                    Insert                             /////////
+/////////////////////////////////////////////////////////////////////////
+
 /*
  * The start of the insert routine
- * At first the position pointer is moved through the tree. It*s aim is to reach
+ * At first the position pointer is moved through the tree. It's aim is to reach
  * the place where the new Node will be added.
  * If the right position is found the node gets added and the balances of the tree will be calculated
  */
@@ -251,13 +255,183 @@ void AVLTree::rotateRight(AVLTree::Node *pos) {
     balHelper->balance = height(balHelper->right) - height(balHelper->left);
 }
 
-void AVLTree::remove(const int) {
+/////////////////////////////////////////////////////////////////////////
+/////////                    Delete                             /////////
+/////////////////////////////////////////////////////////////////////////
 
+void AVLTree::remove(const int value) {
+    //check if Tree is empty
+    if(root == nullptr) {
+        return ;
+    }
+
+    auto pos = root;
+
+    //Searching for the Node to delete
+    while(pos->key != value) {
+        if(pos->key == value)
+             break;
+
+        if(value > pos->key) {
+            if(pos->right != nullptr)
+                pos = pos->right;
+            else
+                return ;
+        }else{
+            if(pos->left != nullptr)
+                pos=pos->left;
+            else
+                return ;
+        }
+    }
+
+    //First Case: Node to delete has no leaves
+    if(pos->left == nullptr && pos->right == nullptr) {
+        if(pos == pos->prev->right) {
+            auto balHelper = pos->prev;
+            pos->prev->right = nullptr;
+            upout(balHelper, value);
+        }else {
+            auto balHelper = pos->prev;
+            pos->prev->left = nullptr;
+            upout(balHelper, value);
+        }
+    }else{
+        //Second Case: Node to delete has one leave
+        if(pos->right != nullptr && pos->left == nullptr) {
+            if(pos == pos->prev->right) {
+                auto balHelper = pos->prev;
+                pos->prev->right = pos->right;
+                pos->right->prev = pos->prev;
+                upout(balHelper, value);
+            }else {
+                auto balHelper = pos->prev;
+                pos->prev->left = pos->right;
+                pos->right->prev = pos->prev;
+                upout(balHelper, value);
+            }
+        }
+
+        if(pos->right == nullptr && pos->left != nullptr) {
+            if(pos == pos->prev->right) {
+                auto balHelper = pos->prev;
+                pos->prev->right = pos->left;
+                pos->left->prev = pos->prev;
+                upout(balHelper, value);
+            }else {
+                auto balHelper = pos->prev;
+                pos->prev->left = pos->left;
+                pos->left->prev = pos->prev;
+                upout(balHelper, value);
+            }
+        }
+
+        //Third Case: Node to delete has two leaves
+        if(pos->right != nullptr && pos->left != nullptr) {
+            auto helper = pos->right;
+            while(helper->left != nullptr)
+                helper = helper->left;
+
+            auto balHelper = helper->prev;
+
+            if(helper == helper->prev->right) {
+                helper->prev->balance--;
+                helper->prev->right = nullptr;
+            }else {
+                helper->prev->balance++;
+                helper->prev->left = nullptr;
+            }
+
+            if(pos == pos->prev->right)
+                pos->prev->right = helper;
+            else
+                pos->prev->left = helper;
+
+            helper->left = pos->left;
+            helper->right = pos->right;
+
+            helper->left->prev = helper;
+            helper->right->prev = helper;
+
+            helper->prev = pos->prev;
+
+            upout(balHelper, value);
+        }
+    }
 }
 
-/*
- * Traversal
- */
+
+void AVLTree::upout(AVLTree::Node *node, const int value) {
+
+    // Calculating the new balances from the parent of the deleted node to the root
+
+    auto pos = node;
+    while(pos != root) {
+        pos->balance = height(pos->right) - height(pos->left);
+        pos = pos->prev;
+    }
+
+    pos = node;
+
+
+
+    while(pos != nullptr) {
+        if(pos->balance == 2 || pos->balance == -2) {
+            if(value > pos->key) {
+                if(pos->left->balance == 0 || pos->left->balance == 1) {
+                    rotateLeft(pos->left);
+                    rotateRight(pos);
+                    break;
+                }else{
+                    rotateRight(pos);
+                    break;
+                }
+            } else{
+                if(pos->right->balance == 0 || pos->right->balance == 1) {
+                    rotateRight(pos->right);
+                    rotateLeft(pos);
+                    break;
+                }else{
+                    rotateLeft(pos);
+                    break;
+                }
+            }
+        }else{
+            pos = pos->prev;
+        }
+    }
+
+    while(pos != nullptr) {
+        if (pos->balance < 0) {
+            auto helper = pos->left;
+            if(height(helper->left) > height(helper->right)) {
+                rotateRight(pos);
+            }else{
+                rotateLeft(pos);
+                rotateRight(pos->prev);
+            }
+        }else{
+            if(pos->balance > 1) {
+                auto helper = pos->right;
+                if (height(helper->right) >= height(helper->left)) {
+                    rotateLeft(pos);
+                } else {
+                    rotateRight(pos);
+                    rotateLeft(pos->prev);
+                }
+            }
+        }
+        pos = pos->prev;
+    }
+}
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////
+/////////                    Traversal                          /////////
+/////////////////////////////////////////////////////////////////////////
 
 vector<int> *AVLTree::preorder() const {
     if(root == nullptr)
