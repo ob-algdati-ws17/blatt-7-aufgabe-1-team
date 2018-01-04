@@ -265,6 +265,12 @@ void AVLTree::remove(const int value) {
         return ;
     }
 
+    if(root->right == nullptr && root->left == nullptr && root->key == value) {
+        root = nullptr;
+        return ;
+    }
+
+
     auto pos = root;
 
     //Searching for the Node to delete
@@ -298,7 +304,14 @@ void AVLTree::remove(const int value) {
         }
     }else{
         //Second Case: Node to delete has one leave
+
         if(pos->right != nullptr && pos->left == nullptr) {
+            if(pos == root) {
+                root = pos->right;
+                pos->right->prev = nullptr;
+                root->balance = height(root->right)-height(root->left);
+                return ;
+            }
             if(pos == pos->prev->right) {
                 auto balHelper = pos->prev;
                 pos->prev->right = pos->right;
@@ -313,6 +326,12 @@ void AVLTree::remove(const int value) {
         }
 
         if(pos->right == nullptr && pos->left != nullptr) {
+            if(pos == root) {
+                root = pos->left;
+                pos->left->prev = nullptr;
+                root->balance = height(root->right)-height(root->left);
+                return ;
+            }
             if(pos == pos->prev->right) {
                 auto balHelper = pos->prev;
                 pos->prev->right = pos->left;
@@ -334,12 +353,27 @@ void AVLTree::remove(const int value) {
 
             auto balHelper = helper->prev;
 
+
+
             if(helper == helper->prev->right) {
                 helper->prev->balance--;
                 helper->prev->right = nullptr;
             }else {
                 helper->prev->balance++;
                 helper->prev->left = nullptr;
+            }
+
+            if(pos == root) {
+                helper->left = root->left;
+                if(helper->prev != root) {
+                    helper->right = root->right;
+                }
+                root->right->prev = helper;
+                root = helper;
+                helper->prev = nullptr;
+                root->balance = height(root->right)-height(root->left);
+                upout(balHelper->right, value);
+                return ;
             }
 
             if(pos == pos->prev->right)
@@ -388,10 +422,11 @@ void AVLTree::upout(AVLTree::Node *node, const int value) {
                 }
             } else{
                 if(pos->right->balance == 0 || pos->right->balance == 1) {
-                    rotateRight(pos->right);
                     rotateLeft(pos);
                     break;
+
                 }else{
+                    rotateRight(pos->right);
                     rotateLeft(pos);
                     break;
                 }

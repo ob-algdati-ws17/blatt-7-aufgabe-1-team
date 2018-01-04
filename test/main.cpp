@@ -9,8 +9,23 @@ int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 
-
     AVLTree *tree = new AVLTree();
+
+    tree->insert(10);
+    tree->insert(55);
+    tree->insert(5);
+    tree->insert(60);
+    tree->insert(6);
+    tree->insert(4);
+    tree->insert(50);
+    tree->insert(7);
+    tree->insert(57);
+
+
+    tree->remove(10);
+
+    return 0;
+
     tree->insert(10);
     tree->insert(5);
     tree->insert(17);
@@ -29,7 +44,7 @@ int main(int argc, char **argv) {
     tree->remove(9);
 
 
-    return 0;
+
 
 
 }
