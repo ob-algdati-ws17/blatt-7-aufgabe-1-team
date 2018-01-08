@@ -230,6 +230,85 @@ TEST(AVLTest, Two_Node_Insert_Remove_UnkownNode){
     EXPECT_FALSE(tree.search(400));
 }
 
+
+TEST(AVLTest, Order_Of_Elemente_After_Root_Deletion){
+    AVLTree tree;
+    tree.insert(10);
+    tree.insert(55);
+    tree.insert(5);
+    tree.insert(60);
+    tree.insert(6);
+    tree.insert(4);
+    tree.insert(50);
+    tree.insert(7);
+    tree.insert(57);
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 4, 6, 7, 55, 50, 60, 57));
+    tree.remove(10);
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(50, 5, 4, 6, 7, 57, 55, 60));
+}
+
+TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Left_Side){
+    AVLTree tree;
+
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(17);
+    tree.insert(20);
+    tree.insert(9);
+    tree.insert(2);
+    tree.insert(12);
+    tree.insert(3);
+
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 3, 9, 17, 12, 20));
+    tree.remove(9);
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 3, 2, 5, 17, 12, 20));
+}
+
+TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Right_Side_with_Left_Right_Rotate){
+    AVLTree tree;
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(55);
+    tree.insert(2);
+    tree.insert(40);
+    tree.insert(57);
+    tree.insert(43);
+
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 55, 40, 43, 57));
+    tree.remove(57);
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 43, 40, 55));
+}
+
+TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Right_Side_with_Right_Rotate){
+    AVLTree tree;
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(55);
+    tree.insert(2);
+    tree.insert(40);
+    tree.insert(57);
+    tree.insert(35);
+
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 55, 40, 35, 57));
+    tree.remove(57);
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 40, 35, 55));
+}
+
+TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Right_Side_with_Left_Rotate){
+    AVLTree tree;
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(55);
+    tree.insert(2);
+    tree.insert(40);
+    tree.insert(57);
+    tree.insert(60);
+
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 55, 40, 57, 60));
+    tree.remove(40);
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 55, 60));
+}
+
 TEST(AVLTest, Random_Node_Insert_Random_Remove){
     AVLTree tree;
     int randInt = 0;

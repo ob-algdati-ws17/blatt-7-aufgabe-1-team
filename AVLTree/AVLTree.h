@@ -6,12 +6,13 @@
 #define BLATT_7_AUFGABE_1_TEAM_AVLTREE_H
 
 #include <vector>
+
 using namespace std;
 
 
 class AVLTree {
 private:
-    struct Node{
+    struct Node {
         Node *left;
         Node *right;
         Node *prev;
@@ -19,7 +20,9 @@ private:
         int balance;
 
         Node(const int);
+
         Node(const int, Node *, Node *);
+
         vector<int> *preorder() const; // Hauptreihenfolge
         vector<int> *inorder() const; // Symmetrische Reihenfolge
         vector<int> *postorder() const; // Nebenreihenfolge
@@ -28,12 +31,39 @@ private:
 
     Node *root = nullptr;
 
-public:
+    /*
+    * calculates the height of the (sub)tree
+    */
+    int height(Node *);
 
     /*
-     * calculates the height of the (sub)tree
+    * edits the balances after adding a new node
+    */
+    void calcBalance(Node *);
+
+    /*
+     * used for performing a left rotate
+    */
+    void rotateLeft(Node *);
+
+    /*
+     * used for performing a right rotate
      */
-    int height(Node*);
+    void rotateRight(Node *);
+
+
+    /*
+     * checks if rotations are needed. Calls rotation functions if needed
+     */
+    void upin(Node *);
+
+    /*
+    * checks if rotations are needed after deletion
+    */
+    void upout(Node *, const int);
+
+
+public:
 
     /*
      * verifies if the tree is empty. returns true if it's empty
@@ -45,25 +75,6 @@ public:
      */
     bool testTesting();
 
-    /*
-     * edits the balances after adding a new node
-     */
-    void calcBalance(Node*);
-
-    /*
-     * checks if rotations are needed. Calls rotation functions if needed
-     */
-    void upin(Node*);
-
-    /*
-     * used for performing a left rotate
-     */
-    void rotateLeft(Node*);
-
-    /*
-     * used for performing a right rotate
-     */
-    void rotateRight(Node*);
 
     /*
      * returns true if a node with the given value is a node in the tree
@@ -80,10 +91,6 @@ public:
      */
     void remove(const int);
 
-    /*
-     * checks if rotations are needed after deletion
-     */
-    void upout(Node*, const int);
 
     /*
      * returns the stored nodes in the tree

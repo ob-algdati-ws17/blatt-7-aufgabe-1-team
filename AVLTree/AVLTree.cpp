@@ -296,10 +296,12 @@ void AVLTree::remove(const int value) {
         if(pos == pos->prev->right) {
             auto balHelper = pos->prev;
             pos->prev->right = nullptr;
+            delete pos;
             upout(balHelper, value);
         }else {
             auto balHelper = pos->prev;
             pos->prev->left = nullptr;
+            delete pos;
             upout(balHelper, value);
         }
     }else{
@@ -310,17 +312,20 @@ void AVLTree::remove(const int value) {
                 root = pos->right;
                 pos->right->prev = nullptr;
                 root->balance = height(root->right)-height(root->left);
+                delete pos;
                 return ;
             }
             if(pos == pos->prev->right) {
                 auto balHelper = pos->prev;
                 pos->prev->right = pos->right;
                 pos->right->prev = pos->prev;
+                delete pos;
                 upout(balHelper, value);
             }else {
                 auto balHelper = pos->prev;
                 pos->prev->left = pos->right;
                 pos->right->prev = pos->prev;
+                delete pos;
                 upout(balHelper, value);
             }
         }
@@ -330,17 +335,20 @@ void AVLTree::remove(const int value) {
                 root = pos->left;
                 pos->left->prev = nullptr;
                 root->balance = height(root->right)-height(root->left);
+                delete pos;
                 return ;
             }
             if(pos == pos->prev->right) {
                 auto balHelper = pos->prev;
                 pos->prev->right = pos->left;
                 pos->left->prev = pos->prev;
+                delete pos;
                 upout(balHelper, value);
             }else {
                 auto balHelper = pos->prev;
                 pos->prev->left = pos->left;
                 pos->left->prev = pos->prev;
+                delete pos;
                 upout(balHelper, value);
             }
         }
@@ -372,6 +380,7 @@ void AVLTree::remove(const int value) {
                 root = helper;
                 helper->prev = nullptr;
                 root->balance = height(root->right)-height(root->left);
+                delete pos;
                 upout(balHelper->right, value);
                 return ;
             }
@@ -388,7 +397,7 @@ void AVLTree::remove(const int value) {
             helper->right->prev = helper;
 
             helper->prev = pos->prev;
-
+            delete pos;
             upout(balHelper, value);
         }
     }
@@ -424,7 +433,6 @@ void AVLTree::upout(AVLTree::Node *node, const int value) {
                 if(pos->right->balance == 0 || pos->right->balance == 1) {
                     rotateLeft(pos);
                     break;
-
                 }else{
                     rotateRight(pos->right);
                     rotateLeft(pos);
