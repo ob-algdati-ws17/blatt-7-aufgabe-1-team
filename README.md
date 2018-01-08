@@ -2,6 +2,6 @@
 <html>
 <body>
 <h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+<p>Github-pages: https://ob-algdati-ws17.github.io/blatt-7-aufgabe-1-team/</p>
 </body>
 </html>

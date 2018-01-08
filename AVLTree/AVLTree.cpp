@@ -4,7 +4,7 @@
 
 #include "AVLTree.h"
 #include <iostream>
-/*
+/**
  * Just a function to check if Googletests are working
  */
 bool AVLTree::testTesting() {
@@ -15,16 +15,23 @@ AVLTree::Node::Node(const int k) : key(k), left(nullptr), right(nullptr), prev(n
 
 AVLTree::Node::Node(const int k, AVLTree::Node *l, AVLTree::Node *r) : key(k), left(l), right(r) {}
 
-/*
- * Checks if the tree is empty
+/**
+ *  Checks if the tree is empty
+ * @return true if the tree is empty and false if there is at least one element
  */
+
+
 bool AVLTree::isEmpty() {
     return root == nullptr;
 }
 
-/*
+/**
  * searches for a given value. If it is found in the tree true is beeing returned
+ * @param value -> the value to search for
+ * @return true if found and false if not
  */
+
+
 bool AVLTree::search(const int value) const {
     if(root == nullptr)
         return false;
@@ -54,12 +61,15 @@ bool AVLTree::search(const int value) const {
 /////////                    Insert                             /////////
 /////////////////////////////////////////////////////////////////////////
 
-/*
- * The start of the insert routine
+/**
+ * The start of the insert routine.
  * At first the position pointer is moved through the tree. It's aim is to reach
  * the place where the new Node will be added.
  * If the right position is found the node gets added and the balances of the tree will be calculated
+ * @param value -> the key to add to the AVL Tree
  */
+
+
 void AVLTree::insert(const int value) {
     auto pos = root;
 
@@ -95,12 +105,14 @@ void AVLTree::insert(const int value) {
     }
 }
 
-/*
+/**
  * This method is called after the new Node is added.
  * The positionpointer runs from the new Node to the root.
  * Depending of the side (right or left) the positionpointer is coming
  * the balance will be increased or decreased by 1
+ * @param newElement -> the newly added element
  */
+
 void AVLTree::calcBalance(AVLTree::Node *newElement) {
     auto pos = newElement;
     while(pos != root) {
@@ -116,8 +128,10 @@ void AVLTree::calcBalance(AVLTree::Node *newElement) {
     upin(newElement);
 }
 
-/*
+/**
  * Used to get the height of the left and the right son
+ * @param node -> element the height should be calculated at
+ * @return the height of element
  */
 int AVLTree::height(AVLTree::Node *node) {
     if(node== nullptr)
@@ -132,9 +146,10 @@ int AVLTree::height(AVLTree::Node *node) {
     }
 }
 
-/*
+/**
  * checks if the tree is a valid AVL tree.
  * depending of the balances rotations are called
+ * @param newElement -> the newly added element
  */
 void AVLTree::upin(AVLTree::Node *newElement) {
     auto pos = newElement;
@@ -165,10 +180,12 @@ void AVLTree::upin(AVLTree::Node *newElement) {
     }
 }
 
-/*
- * makes a left rotate
+/**
+ *  makes a left rotate
  * afterwards the heights are checked and balances are calculated
+ * @param pos -> the node to rotate
  */
+
 void AVLTree::rotateLeft(AVLTree::Node *pos) {
     auto helper = pos->right;
     auto helper2 = helper->left;
@@ -211,9 +228,10 @@ void AVLTree::rotateLeft(AVLTree::Node *pos) {
 
 }
 
-/*
+/**
  * makes a right rotate
  * afterwards the heights are checked and balances are calculated
+ * @param pos -> the node to rotate
  */
 void AVLTree::rotateRight(AVLTree::Node *pos) {
     auto helper = pos->left;
@@ -259,6 +277,12 @@ void AVLTree::rotateRight(AVLTree::Node *pos) {
 /////////                    Delete                             /////////
 /////////////////////////////////////////////////////////////////////////
 
+/**
+ * Entrypoint to remove a Node.
+ * First it searches for the Node with the same value as submitted.
+ * Afterwards the Node gets deleted and upout gets called.
+ * @param value -> the value to delete
+ */
 void AVLTree::remove(const int value) {
     //check if Tree is empty
     if(root == nullptr) {
@@ -403,7 +427,11 @@ void AVLTree::remove(const int value) {
     }
 }
 
-
+/**
+ * Checks the height and rotates if needed
+ * @param node -> the parent of the deleted node
+ * @param value -> the key of the deleted node
+ */
 void AVLTree::upout(AVLTree::Node *node, const int value) {
 
     // Calculating the new balances from the parent of the deleted node to the root
