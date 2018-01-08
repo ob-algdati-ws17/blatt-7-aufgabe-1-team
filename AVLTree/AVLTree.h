@@ -30,30 +30,74 @@ private:
 
 public:
 
+    /*
+     * calculates the height of the (sub)tree
+     */
     int height(Node*);
 
+    /*
+     * verifies if the tree is empty. returns true if it's empty
+     */
     bool isEmpty();
 
+    /*
+     * used to verify if googletests are working
+     */
     bool testTesting();
 
+    /*
+     * edits the balances after adding a new node
+     */
     void calcBalance(Node*);
 
+    /*
+     * checks if rotations are needed. Calls rotation functions if needed
+     */
     void upin(Node*);
 
+    /*
+     * used for performing a left rotate
+     */
     void rotateLeft(Node*);
 
+    /*
+     * used for performing a right rotate
+     */
     void rotateRight(Node*);
 
+    /*
+     * returns true if a node with the given value is a node in the tree
+     */
     bool search(const int) const;
 
+    /*
+     * entrypoint for insertion. adds the new node
+     */
     void insert(const int);
 
+    /*
+     * entry point for deletion
+     */
     void remove(const int);
 
+    /*
+     * checks if rotations are needed after deletion
+     */
     void upout(Node*, const int);
 
+    /*
+     * returns the stored nodes in the tree
+     */
     vector<int> *preorder() const; // Hauptreihenfolge
+
+    /*
+     * returns the stored nodes in the tree
+    */
     vector<int> *inorder() const; // Symmetrische Reihenfolge
+
+    /*
+    * returns the stored nodes in the tree
+    */
     vector<int> *postorder() const; // Nebenreihenfolge
 
 
