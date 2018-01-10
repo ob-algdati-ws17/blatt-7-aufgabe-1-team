@@ -309,25 +309,42 @@ TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Right_Side_with_Left_Rotate){
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 55, 60));
 }
 
+TEST(AVLTest, Symfollower_Is_Right_Son){
+    AVLTree tree;
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(55);
+    tree.insert(2);
+    tree.insert(40);
+    tree.insert(57);
+
+
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 55, 40, 57));
+    tree.remove(55);
+    EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 40));
+}
+
 TEST(AVLTest, Random_Node_Insert_Random_Remove){
     AVLTree tree;
     int randInt = 0;
-    for(int i = 0; i < 200; i++)
+    for(int i = 0; i < 75; i++)
     {
         randInt = rand() % 1000;
         tree.insert(randInt);
         EXPECT_TRUE(tree.search(randInt));
     }
-    for(int k = 0; k < 200; k++)
+    for(int k = 0; k < 75; k++)
     {
         tree.search(rand() % 1000);
     }
-//    for(int m = 0; m < 200; m++)
-//    {
-//        randInt = rand() % 1000;
-//        tree.remove(randInt);
-//        EXPECT_FALSE(tree.search(randInt));
-//    }
+    for(int m = 0; m < 75; m++)
+    {
+        randInt = rand() % 1000;
+        cout << randInt << endl;
+        tree.remove(randInt);
+          EXPECT_FALSE(tree.search(randInt));
+    }
+
     for(int k = 0; k < 200; k++)
     {
         tree.search(rand() % 1000);

@@ -13,10 +13,26 @@ using namespace std;
 class AVLTree {
 private:
     struct Node {
+        /**
+         * the left son of the node
+         */
         Node *left;
+        /**
+         * the right son of the node
+         */
         Node *right;
+        /**
+         * the parent of the node
+         */
         Node *prev;
+        /**
+         * the stored value of the node
+         */
         int key;
+        /**
+         * balance of the node.
+         * It's calculated (height of right son)-(height of left son)
+         */
         int balance;
 
         Node(const int);
@@ -29,6 +45,9 @@ private:
 
     };
 
+    /**
+     * the root of the tree.
+     */
     Node *root = nullptr;
 
     /**

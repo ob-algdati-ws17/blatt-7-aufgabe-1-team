@@ -379,49 +379,79 @@ void AVLTree::remove(const int value) {
 
         //Third Case: Node to delete has two leaves
         if(pos->right != nullptr && pos->left != nullptr) {
-            auto helper = pos->right;
-            while(helper->left != nullptr)
-                helper = helper->left;
+            auto symFollower = pos->right;
+            while(symFollower->left != nullptr)
+                symFollower = symFollower->left;
 
-            auto balHelper = helper->prev;
-
-
-
-            if(helper == helper->prev->right) {
-                helper->prev->balance--;
-                helper->prev->right = nullptr;
-            }else {
-                helper->prev->balance++;
-                helper->prev->left = nullptr;
+            //SymFollower has right son
+            if(symFollower->right != nullptr) {
+                symFollower->right->prev = symFollower->prev;
+                symFollower->prev->left = symFollower->right;
             }
 
-            if(pos == root) {
-                helper->left = root->left;
-                if(helper->prev != root) {
-                    helper->right = root->right;
+            auto balHelper = symFollower->prev;
+
+            //SymFollower is right son of position to delete
+            if(symFollower->prev == pos) {
+                balHelper = pos->prev;
+
+                if(pos != root) {
+                    if (pos == pos->prev->right)
+                        pos->prev->right = symFollower;
+                    else
+                        pos->prev->left = symFollower;
+                }else {
+                    root = symFollower;
                 }
-                root->right->prev = helper;
-                root = helper;
-                helper->prev = nullptr;
-                root->balance = height(root->right)-height(root->left);
-                delete pos;
-                upout(balHelper->right, value);
+
+                symFollower->prev = pos->prev;
+
+                if(pos->left != nullptr) {
+                    symFollower->left = pos->left;
+                    pos->left->prev = symFollower;
+                }
+
+                auto posHelper = balHelper;
+                while(posHelper != nullptr){
+                    posHelper->balance = height(posHelper->right) - height(posHelper->left);
+                    posHelper = posHelper->prev;
+                }
+                upout(balHelper, value);
                 return ;
             }
 
-            if(pos == pos->prev->right)
-                pos->prev->right = helper;
-            else
-                pos->prev->left = helper;
+            //SymFollower is NOT right son of position to delete
+            if(symFollower->prev != pos) {
 
-            helper->left = pos->left;
-            helper->right = pos->right;
+                if(pos != root) {
+                    if (pos == pos->prev->right)
+                        pos->prev->right = symFollower;
+                    else
+                        pos->prev->left = symFollower;
+                }else {
+                    root = symFollower;
+                }
 
-            helper->left->prev = helper;
-            helper->right->prev = helper;
+                symFollower->prev->left = nullptr;
 
-            helper->prev = pos->prev;
-            delete pos;
+                symFollower->prev = pos->prev;
+
+                if(pos->right != nullptr) {
+                    symFollower->right = pos->right;
+                    pos->right->prev = symFollower;
+                }
+
+                if(pos->left != nullptr)
+                    symFollower->left = pos->left;
+                    pos->left->prev = symFollower;
+            }
+
+
+            auto posHelper = balHelper;
+            while(posHelper != nullptr){
+                posHelper->balance = height(posHelper->right) - height(posHelper->left);
+                posHelper = posHelper->prev;
+            }
             upout(balHelper, value);
         }
     }
