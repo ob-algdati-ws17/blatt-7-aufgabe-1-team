@@ -411,7 +411,7 @@ void AVLTree::remove(const int value) {
                     pos->left->prev = symFollower;
                 }
 
-                auto posHelper = balHelper;
+                auto posHelper = symFollower;
                 while(posHelper != nullptr){
                     posHelper->balance = height(posHelper->right) - height(posHelper->left);
                     posHelper = posHelper->prev;

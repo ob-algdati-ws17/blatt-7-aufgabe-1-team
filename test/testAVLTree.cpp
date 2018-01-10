@@ -326,6 +326,7 @@ TEST(AVLTest, Symfollower_Is_Right_Son){
 
 TEST(AVLTest, Random_Node_Insert_Random_Remove){
     AVLTree tree;
+    srand(time(NULL));
     int randInt = 0;
     for(int i = 0; i < 75; i++)
     {
@@ -337,12 +338,12 @@ TEST(AVLTest, Random_Node_Insert_Random_Remove){
     {
         tree.search(rand() % 1000);
     }
-    for(int m = 0; m < 75; m++)
+    for(int m = 0; m < 100; m++)
     {
         randInt = rand() % 1000;
         cout << randInt << endl;
         tree.remove(randInt);
-          EXPECT_FALSE(tree.search(randInt));
+        EXPECT_FALSE(tree.search(randInt));
     }
 
     for(int k = 0; k < 200; k++)
