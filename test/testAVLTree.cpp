@@ -118,7 +118,7 @@ TEST(AVLTest, One_Node_Insert_Remove){
     EXPECT_THAT(*tree.inorder(), testing::ElementsAre(55789));
     EXPECT_THAT(*tree.postorder(), testing::ElementsAre(55789));
     EXPECT_TRUE(tree.search(55789));
-    tree.remove(55789);
+    tree.remove(tree.getRoot(), 55789);
     EXPECT_FALSE(tree.search(55789));
     EXPECT_FALSE(tree.search(557));
    EXPECT_FALSE(tree.search(-557));
@@ -136,7 +136,7 @@ TEST(AVLTest, Two_Node_Insert_Remove_SmallOne){
     EXPECT_THAT(*tree.postorder(), testing::ElementsAre(557, 55789));
     EXPECT_TRUE(tree.search(55789));
     EXPECT_TRUE(tree.search(557));
-    tree.remove(557);
+    tree.remove(tree.getRoot(), 557);
     EXPECT_TRUE(tree.search(55789));
     EXPECT_FALSE(tree.search(557));
 }
@@ -153,7 +153,7 @@ TEST(AVLTest, Two_Node_Insert_Remove_BiggerOne){
     EXPECT_THAT(*tree.postorder(), testing::ElementsAre(557, 55789));
     EXPECT_TRUE(tree.search(55789));
     EXPECT_TRUE(tree.search(557));
-    tree.remove(55789);
+    tree.remove(tree.getRoot(), 55789);
     EXPECT_TRUE(tree.search(557));
     EXPECT_FALSE(tree.search(55789));
 }
@@ -171,7 +171,7 @@ TEST(AVLTest, Two_Node_Insert_One_Negative_Remove_One){
     EXPECT_THAT(*tree.postorder(), testing::ElementsAre(-557, 55789));
     EXPECT_TRUE(tree.search(55789));
     EXPECT_TRUE(tree.search(-557));
-    tree.remove(55789);
+    tree.remove(tree.getRoot(), 55789);
     EXPECT_FALSE(tree.search(55789));
     EXPECT_TRUE(tree.search(-557));
 }
@@ -188,8 +188,8 @@ TEST(AVLTest, Two_Node_Insert_Remove_Two){
     EXPECT_THAT(*tree.postorder(), testing::ElementsAre(557, 55789));
     EXPECT_TRUE(tree.search(55789));
     EXPECT_TRUE(tree.search(557));
-    tree.remove(557);
-    tree.remove(55789);
+    tree.remove(tree.getRoot(), 557);
+    tree.remove(tree.getRoot(), 55789);
     EXPECT_FALSE(tree.search(55789));
     EXPECT_FALSE(tree.search(557));
 }
@@ -206,8 +206,8 @@ TEST(AVLTest, Two_Node_Insert_Remove_SameTwoTimes){
     EXPECT_THAT(*tree.postorder(), testing::ElementsAre(557, 55789));
     EXPECT_TRUE(tree.search(55789));
     EXPECT_TRUE(tree.search(557));
-    tree.remove(557);
-    tree.remove(557);
+    tree.remove(tree.getRoot(), 557);
+    tree.remove(tree.getRoot(), 557);
     EXPECT_TRUE(tree.search(55789));
     EXPECT_FALSE(tree.search(557));
 }
@@ -224,7 +224,7 @@ TEST(AVLTest, Two_Node_Insert_Remove_UnkownNode){
     EXPECT_THAT(*tree.postorder(), testing::ElementsAre(557, 55789));
     EXPECT_TRUE(tree.search(55789));
     EXPECT_TRUE(tree.search(557));
-    tree.remove(400);
+    tree.remove(tree.getRoot(), 400);
     EXPECT_TRUE(tree.search(55789));
     EXPECT_TRUE(tree.search(557));
     EXPECT_FALSE(tree.search(400));
@@ -243,7 +243,7 @@ TEST(AVLTest, Order_Of_Elemente_After_Root_Deletion){
     tree.insert(7);
     tree.insert(57);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 4, 6, 7, 55, 50, 60, 57));
-    tree.remove(10);
+    tree.remove(tree.getRoot(), 10);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(50, 5, 4, 6, 7, 57, 55, 60));
 }
 
@@ -260,7 +260,7 @@ TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Left_Side){
     tree.insert(3);
 
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 3, 9, 17, 12, 20));
-    tree.remove(9);
+    tree.remove(tree.getRoot(), 9);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 3, 2, 5, 17, 12, 20));
 }
 
@@ -275,7 +275,7 @@ TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Right_Side_with_Left_Right_Rot
     tree.insert(43);
 
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 55, 40, 43, 57));
-    tree.remove(57);
+    tree.remove(tree.getRoot(), 57);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 43, 40, 55));
 }
 
@@ -290,7 +290,7 @@ TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Right_Side_with_Right_Rotate){
     tree.insert(35);
 
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 55, 40, 35, 57));
-    tree.remove(57);
+    tree.remove(tree.getRoot(), 57);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 40, 35, 55));
 }
 
@@ -305,7 +305,7 @@ TEST(AVLTest, Order_Of_Elemente_After_Deletion_On_Right_Side_with_Left_Rotate){
     tree.insert(60);
 
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 55, 40, 57, 60));
-    tree.remove(40);
+    tree.remove(tree.getRoot(), 40);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 55, 60));
 }
 
@@ -320,7 +320,7 @@ TEST(AVLTest, Symfollower_Is_Right_Son){
 
 
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 55, 40, 57));
-    tree.remove(55);
+    tree.remove(tree.getRoot(), 55);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 40));
 }
 
@@ -328,21 +328,20 @@ TEST(AVLTest, Random_Node_Insert_Random_Remove){
     AVLTree tree;
     srand(time(NULL));
     int randInt = 0;
-    for(int i = 0; i < 75; i++)
+    for(int i = 0; i < 100; i++)
     {
         randInt = rand() % 1000;
         tree.insert(randInt);
         EXPECT_TRUE(tree.search(randInt));
     }
-    for(int k = 0; k < 75; k++)
+    for(int k = 0; k < 100; k++)
     {
         tree.search(rand() % 1000);
     }
     for(int m = 0; m < 100; m++)
     {
         randInt = rand() % 1000;
-        cout << randInt << endl;
-        tree.remove(randInt);
+        tree.remove(tree.getRoot(), randInt);
         EXPECT_FALSE(tree.search(randInt));
     }
 

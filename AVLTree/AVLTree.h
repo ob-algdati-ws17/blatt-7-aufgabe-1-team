@@ -45,6 +45,12 @@ private:
 
     };
 
+    void removeTwoLeaves(Node *, int);
+
+    void removeOneLeaves(Node *, int);
+
+    void removeNoLeaves(Node *, int);
+
     /**
      * the root of the tree.
      */
@@ -84,6 +90,8 @@ private:
 
 public:
 
+    Node* getRoot();
+
     /**
      * verifies if the tree is empty. returns true if it's empty
      */
@@ -108,7 +116,7 @@ public:
     /**
      * entry point for deletion
      */
-    void remove(const int);
+    void remove(Node *, const int);
 
 
     /**

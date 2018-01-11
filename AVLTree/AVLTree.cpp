@@ -21,8 +21,14 @@ AVLTree::Node::Node(const int k, AVLTree::Node *l, AVLTree::Node *r) : key(k), l
  */
 
 
+
+
 bool AVLTree::isEmpty() {
     return root == nullptr;
+}
+
+AVLTree::Node *AVLTree::getRoot() {
+    return root;
 }
 
 /**
@@ -277,13 +283,16 @@ void AVLTree::rotateRight(AVLTree::Node *pos) {
 /////////                    Delete                             /////////
 /////////////////////////////////////////////////////////////////////////
 
+
 /**
  * Entrypoint to remove a Node.
  * First it searches for the Node with the same value as submitted.
  * Afterwards the Node gets deleted and upout gets called.
  * @param value -> the value to delete
  */
-void AVLTree::remove(const int value) {
+void AVLTree::remove(Node *startElement, const int value) {
+
+
     //check if Tree is empty
     if(root == nullptr) {
         return ;
@@ -295,7 +304,7 @@ void AVLTree::remove(const int value) {
     }
 
 
-    auto pos = root;
+    auto pos = startElement;
 
     //Searching for the Node to delete
     while(pos->key != value) {
@@ -315,146 +324,263 @@ void AVLTree::remove(const int value) {
         }
     }
 
-    //First Case: Node to delete has no leaves
+
+    //First Case: Node to delete has no sons
+    ///////////////////////////////////////////////////////////////////////////////////////////////
     if(pos->left == nullptr && pos->right == nullptr) {
-        if(pos == pos->prev->right) {
-            auto balHelper = pos->prev;
-            pos->prev->right = nullptr;
-            delete pos;
-            upout(balHelper, value);
-        }else {
-            auto balHelper = pos->prev;
-            pos->prev->left = nullptr;
-            delete pos;
-            upout(balHelper, value);
-        }
-    }else{
-        //Second Case: Node to delete has one leave
 
-        if(pos->right != nullptr && pos->left == nullptr) {
-            if(pos == root) {
-                root = pos->right;
-                pos->right->prev = nullptr;
-                root->balance = height(root->right)-height(root->left);
+        removeTwoLeaves(pos, value);
+        return;
+
+        /*
+        if (pos == root) {
+            root = nullptr;
+            delete pos;
+            return;
+        }
+        //pos is right son of it's parent
+        if (pos == pos->prev->right) {
+            pos->prev->balance--;
+
+            //parent of pos to delete has a left son => no height changes, no rotation needed
+            if (pos->prev->balance == -1) {
+                pos->prev->right = nullptr;
+                delete (pos);
+                return;
+            }
+            //parent of pos only had it's right son, which got deleted => change in height => rotation might be needed
+            if (pos->prev->balance == 0) {
+                pos->prev->right = nullptr;
+                auto helper = pos->prev;
                 delete pos;
+                upout(helper, value);
+                return;
+            }
+
+            //parent of pos has a left son with another left son => rotation needed
+            if (pos->prev->balance == -2) {
+                pos->prev->balance=-1;
+                upout(pos, value);
+                pos->prev->right = nullptr;
+                auto helper = pos->prev;
+                delete pos;
+                return;
+            }
+        } else { //node to delete is left son
+            pos->prev->balance++;
+            //parent of pos has 1 right son => no change in height => no rotation needed
+            if (pos->prev->balance == 1) {
+                pos->prev->left = nullptr;
+                delete (pos);
+                return;
+            }
+
+            //parent of pos has no right son => height got changed => rotation needed
+            if (pos->prev->balance == 0) {
+                auto helper = pos->prev;
+                helper->left = nullptr;
+                delete (pos);
+                upout(helper, value);
+                return;
+            }
+
+            //parent of pos has a son with a son on right side 0> rotation definitly needed
+            if (pos->prev->balance == 2) {
+                pos->prev->balance=1;
+                upout(pos, value);
+                auto helper = pos->prev;
+                helper->left = nullptr;
+                delete (pos);
+                return;
+            }
+        }
+         */
+    }
+
+        //Case 2: node to delete has one son
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        if((pos->right != nullptr && pos->left == nullptr) || pos->right == nullptr && pos->left != nullptr) {
+
+            removeOneLeaves(pos, value);
+            return;
+
+            /*
+            //son is on the right side
+            if(pos->right != nullptr) {
+                if(pos == root) {
+                    root = pos->right;
+                    root->prev = nullptr;
+                    root->balance = 0;
+                    return ;
+                }
+                pos->prev->balance--;
+                int helper = pos->key;
+                pos->key = pos->right->key;
+                pos->right->key = helper;
+                delete(pos->right);
+                pos->right == nullptr;
+                upout(pos, value);
                 return ;
             }
-            if(pos == pos->prev->right) {
-                auto balHelper = pos->prev;
-                pos->prev->right = pos->right;
-                pos->right->prev = pos->prev;
-                delete pos;
-                upout(balHelper, value);
-            }else {
-                auto balHelper = pos->prev;
-                pos->prev->left = pos->right;
-                pos->right->prev = pos->prev;
-                delete pos;
-                upout(balHelper, value);
-            }
-        }
 
-        if(pos->right == nullptr && pos->left != nullptr) {
-            if(pos == root) {
-                root = pos->left;
-                pos->left->prev = nullptr;
-                root->balance = height(root->right)-height(root->left);
-                delete pos;
+            //son is on the left side
+            if(pos->left != nullptr) {
+                if(pos == root) {
+                    root = pos->left;
+                    root->prev = nullptr;
+                    root->balance = 0;
+                    return ;
+                }
+                pos->prev->balance++;
+                int helper = pos->key;
+                pos->key = pos->left->key;
+                pos->left->key = helper;
+                delete(pos->left);
+                pos->left == nullptr;
+                upout(pos, value);
                 return ;
             }
-            if(pos == pos->prev->right) {
-                auto balHelper = pos->prev;
-                pos->prev->right = pos->left;
-                pos->left->prev = pos->prev;
-                delete pos;
-                upout(balHelper, value);
-            }else {
-                auto balHelper = pos->prev;
-                pos->prev->left = pos->left;
-                pos->left->prev = pos->prev;
-                delete pos;
-                upout(balHelper, value);
-            }
+            */
         }
 
-        //Third Case: Node to delete has two leaves
+        //Case 3: node to delete has two sons
+        ///////////////////////////////////////////////////////////////////////////////////////////////
         if(pos->right != nullptr && pos->left != nullptr) {
+            removeNoLeaves(pos, value);
+            /*
+            //find symetric follower
             auto symFollower = pos->right;
-            while(symFollower->left != nullptr)
+            while(symFollower->left != nullptr) {
                 symFollower = symFollower->left;
-
-            //SymFollower has right son
-            if(symFollower->right != nullptr) {
-                symFollower->right->prev = symFollower->prev;
-                symFollower->prev->left = symFollower->right;
             }
 
-            auto balHelper = symFollower->prev;
+            //change value of pos to delete and symFollower
+            int helper = pos->key;
+            pos->key = symFollower->key;
+            symFollower->key = helper;
 
-            //SymFollower is right son of position to delete
-            if(symFollower->prev == pos) {
-                balHelper = pos->prev;
+            //entfernen des symFollowers mit dem key von pos. Ab hier kommen nur noch Case 1 oder Case 2 in Frage.
+            remove(pos->right, helper);
+             */
+        }
+}
 
-                if(pos != root) {
-                    if (pos == pos->prev->right)
-                        pos->prev->right = symFollower;
-                    else
-                        pos->prev->left = symFollower;
-                }else {
-                    root = symFollower;
-                }
+void AVLTree::removeTwoLeaves(Node *pos, const int value) {
+    if (pos == root) {
+        root = nullptr;
+        delete pos;
+        return;
+    }
+    //pos is right son of it's parent
+    if (pos == pos->prev->right) {
+        pos->prev->balance--;
 
-                symFollower->prev = pos->prev;
+        //parent of pos to delete has a left son => no height changes, no rotation needed
+        if (pos->prev->balance == -1) {
+            pos->prev->right = nullptr;
+            delete (pos);
+            return;
+        }
+        //parent of pos only had it's right son, which got deleted => change in height => rotation might be needed
+        if (pos->prev->balance == 0) {
+            pos->prev->right = nullptr;
+            auto helper = pos->prev;
+            delete pos;
+            upout(helper, value);
+            return;
+        }
 
-                if(pos->left != nullptr) {
-                    symFollower->left = pos->left;
-                    pos->left->prev = symFollower;
-                }
+        //parent of pos has a left son with another left son => rotation needed
+        if (pos->prev->balance == -2) {
+            pos->prev->balance=-1;
+            upout(pos, value);
+            pos->prev->right = nullptr;
+            auto helper = pos->prev;
+            delete pos;
+            return;
+        }
+    } else { //node to delete is left son
+        pos->prev->balance++;
+        //parent of pos has 1 right son => no change in height => no rotation needed
+        if (pos->prev->balance == 1) {
+            pos->prev->left = nullptr;
+            delete (pos);
+            return;
+        }
 
-                auto posHelper = symFollower;
-                while(posHelper != nullptr){
-                    posHelper->balance = height(posHelper->right) - height(posHelper->left);
-                    posHelper = posHelper->prev;
-                }
-                upout(balHelper, value);
-                return ;
-            }
+        //parent of pos has no right son => height got changed => rotation needed
+        if (pos->prev->balance == 0) {
+            auto helper = pos->prev;
+            helper->left = nullptr;
+            delete (pos);
+            upout(helper, value);
+            return;
+        }
 
-            //SymFollower is NOT right son of position to delete
-            if(symFollower->prev != pos) {
-
-                if(pos != root) {
-                    if (pos == pos->prev->right)
-                        pos->prev->right = symFollower;
-                    else
-                        pos->prev->left = symFollower;
-                }else {
-                    root = symFollower;
-                }
-
-                symFollower->prev->left = nullptr;
-
-                symFollower->prev = pos->prev;
-
-                if(pos->right != nullptr) {
-                    symFollower->right = pos->right;
-                    pos->right->prev = symFollower;
-                }
-
-                if(pos->left != nullptr)
-                    symFollower->left = pos->left;
-                    pos->left->prev = symFollower;
-            }
-
-
-            auto posHelper = balHelper;
-            while(posHelper != nullptr){
-                posHelper->balance = height(posHelper->right) - height(posHelper->left);
-                posHelper = posHelper->prev;
-            }
-            upout(balHelper, value);
+        //parent of pos has a son with a son on right side 0> rotation definitly needed
+        if (pos->prev->balance == 2) {
+            pos->prev->balance=1;
+            upout(pos, value);
+            auto helper = pos->prev;
+            helper->left = nullptr;
+            delete (pos);
+            return;
         }
     }
+}
+
+void AVLTree::removeOneLeaves(Node *pos, const int value) {
+//son is on the right side
+    if(pos->right != nullptr) {
+        if(pos == root) {
+            root = pos->right;
+            root->prev = nullptr;
+            root->balance = 0;
+            return ;
+        }
+        pos->prev->balance--;
+        int helper = pos->key;
+        pos->key = pos->right->key;
+        pos->right->key = helper;
+        delete(pos->right);
+        pos->right == nullptr;
+        upout(pos, value);
+        return ;
+    }
+
+    //son is on the left side
+    if(pos->left != nullptr) {
+        if(pos == root) {
+            root = pos->left;
+            root->prev = nullptr;
+            root->balance = 0;
+            return ;
+        }
+        pos->prev->balance++;
+        int helper = pos->key;
+        pos->key = pos->left->key;
+        pos->left->key = helper;
+        delete(pos->left);
+        pos->left == nullptr;
+        upout(pos, value);
+        return ;
+    }
+}
+
+void AVLTree::removeNoLeaves(Node *pos, const int value) {
+//find symetric follower
+    auto symFollower = pos->right;
+    while(symFollower->left != nullptr) {
+        symFollower = symFollower->left;
+    }
+
+    //change value of pos to delete and symFollower
+    int helper = pos->key;
+    pos->key = symFollower->key;
+    symFollower->key = helper;
+
+    //entfernen des symFollowers mit dem key von pos. Ab hier kommen nur noch Case 1 oder Case 2 in Frage.
+    remove(pos->right, helper);
 }
 
 /**
@@ -464,65 +590,86 @@ void AVLTree::remove(const int value) {
  */
 void AVLTree::upout(AVLTree::Node *node, const int value) {
 
-    // Calculating the new balances from the parent of the deleted node to the root
-
     auto pos = node;
-    while(pos != root) {
-        pos->balance = height(pos->right) - height(pos->left);
-        pos = pos->prev;
+    //Abbruchbedingung für Rekursion
+    if(pos==root){
+        return;
     }
 
-    pos = node;
-
-
-
-    while(pos != nullptr) {
-        if(pos->balance == 2 || pos->balance == -2) {
-            if(value > pos->key) {
-                if(pos->left->balance == 0 || pos->left->balance == 1) {
-                    rotateLeft(pos->left);
-                    rotateRight(pos);
-                    break;
-                }else{
-                    rotateRight(pos);
-                    break;
-                }
-            } else{
-                if(pos->right->balance == 0 || pos->right->balance == 1) {
-                    rotateLeft(pos);
-                    break;
-                }else{
-                    rotateRight(pos->right);
-                    rotateLeft(pos);
-                    break;
-                }
-            }
-        }else{
-            pos = pos->prev;
+    //pos ist linker Nachfolger von Parent
+    if(pos->prev->left == pos) {
+        //Fall 1.1: parent of pos has balance -1 => set parent bal = 0 and call upout
+        if(pos->prev->balance == -1) {
+            pos->prev->balance = 0;
+            upout(pos->prev, value);
         }
-    }
-
-    while(pos != nullptr) {
-        if (pos->balance < 0) {
-            auto helper = pos->left;
-            if(height(helper->left) > height(helper->right)) {
-                rotateRight(pos);
+        //Fall 1.2: balance of parent is 0 => set parent balance = 1 and finish
+        else {
+            if (pos->prev->balance == 0) {
+                pos->prev->balance = 1;
+                return;
             }else{
-                rotateLeft(pos);
-                rotateRight(pos->prev);
+                //Fall 1.3: balance of parent is 1
+                if(pos->prev->balance == 1) {
+                    //Fall 1.3.1: balance of parents left son is 0
+                    if(pos->prev->right->balance == 0) {
+                        rotateLeft(pos->prev);
+                        pos->prev->balance = 1;
+                        pos->prev->prev->balance = -1;
+                    }else{
+                        //Fall 1.3.2: balance of parents left son is 1
+                        if(pos->prev->right->balance == 1) {
+                            rotateLeft(pos->prev);
+                            upout(pos->prev->prev, value);
+                            return;
+                        }else{
+                            //Fall 1.3.3: balance of parents left son is -1
+                            if(pos->prev->right->balance == -1) {
+                                rotateRight(pos->prev->right);
+                                rotateLeft(pos->prev);
+                                upout(pos->prev->prev, value);
+                                return ;
+                            }
+                        }
+                    }
+                }
             }
+
+        }
+    }else{
+        //Fall 2: pos is right son
+
+        //Fall 2.1: parent of pos has balance 1 => set parent bal = 0 and call upout
+        if(pos->prev->balance == 1) {
+            pos->prev->balance = 0;
+            upout(pos->prev, value);
         }else{
-            if(pos->balance > 1) {
-                auto helper = pos->right;
-                if (height(helper->right) >= height(helper->left)) {
-                    rotateLeft(pos);
-                } else {
-                    rotateRight(pos);
-                    rotateLeft(pos->prev);
+            if(pos->prev->balance == 0) {
+                pos->prev->balance = -1;
+                return ;
+            }else{
+                if(pos->prev->balance == -1) {
+                    if(pos->prev->left->balance == 0) {
+                        rotateRight(pos->prev);
+                        pos->prev->balance = -1;
+                        pos->prev->prev->balance = 1;
+                    }else{
+                        if(pos->prev->left->balance == -1) {
+                            rotateRight(pos->prev);
+                            upout(pos->prev->prev, value);
+                            return ;
+                        }else{
+                            if(pos->prev->left->balance == 1) {
+                                rotateLeft(pos->prev->left);
+                                rotateRight(pos->prev);
+                                upout(pos->prev->prev, value);
+                                return;
+                            }
+                        }
+                    }
                 }
             }
         }
-        pos = pos->prev;
     }
 }
 
