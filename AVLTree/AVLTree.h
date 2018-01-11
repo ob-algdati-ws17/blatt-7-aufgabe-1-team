@@ -90,6 +90,16 @@ private:
 
 public:
 
+    /**
+     * used to verify the balance of the tree. Used to test the balance of the tree
+     * @return true is no balance is >2 or <-2.
+     */
+    bool checkBalance(Node *);
+
+    /**
+     * used to get the root Element of the list.
+     * @return the root node
+     */
     Node* getRoot();
 
     /**
