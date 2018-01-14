@@ -324,7 +324,7 @@ TEST(AVLTest, Symfollower_Is_Right_Son){
     tree.remove(tree.getRoot(), 55);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 40));
 }
-/*
+
 TEST(AVLTest, Random_Node_Insert_Random_Remove){
     AVLTree tree;
     srand(time(NULL));
@@ -352,7 +352,7 @@ TEST(AVLTest, Random_Node_Insert_Random_Remove){
     }
 }
 
-*/
+
 
 
 
