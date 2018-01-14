@@ -325,35 +325,7 @@ TEST(AVLTest, Symfollower_Is_Right_Son){
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 40));
 }
 
-//seems to fail travis tests sometimes due to too high runtime
-/*
-TEST(AVLTest, Random_Node_Insert_Random_Remove){
-    AVLTree tree;
-    srand(time(NULL));
-    int randInt = 0;
-    for(int i = 0; i < 100; i++)
-    {
-        randInt = rand() % 1000;
-        tree.insert(randInt);
-        EXPECT_TRUE(tree.search(randInt));
-    }
-    for(int k = 0; k < 100; k++)
-    {
-        tree.search(rand() % 1000);
-    }
-    for(int m = 0; m < 100; m++)
-    {
-        randInt = rand() % 1000;
-        tree.remove(tree.getRoot(), randInt);
-        EXPECT_FALSE(tree.search(randInt));
-    }
 
-    for(int k = 0; k < 200; k++)
-    {
-        tree.search(rand() % 1000);
-    }
-}
-*/
 
 
 
