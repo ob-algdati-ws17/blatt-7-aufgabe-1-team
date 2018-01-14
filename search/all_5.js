@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['key',['key',['../struct_a_v_l_tree_1_1_node.html#a1b26dc3b4fae36eb0d1fce6b2d0d7ebc',1,'AVLTree::Node']]]
+  ['remove',['remove',['../class_a_v_l_tree.html#a64e84b8a5d53de3b4288e3bd742af694',1,'AVLTree']]]
 ];

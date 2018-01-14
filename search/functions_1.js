@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['height',['height',['../class_a_v_l_tree.html#a227572276f4ba422998dd130b1820623',1,'AVLTree']]]
+  ['getroot',['getRoot',['../class_a_v_l_tree.html#a0963898c1dc2def5e5f0c26dcedfbdb6',1,'AVLTree']]]
 ];

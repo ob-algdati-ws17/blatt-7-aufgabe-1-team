@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['balance',['balance',['../struct_a_v_l_tree_1_1_node.html#a4e96dd90c70b3467e0c660b878f29e92',1,'AVLTree::Node']]]
+  ['checkbalance',['checkBalance',['../class_a_v_l_tree.html#a38baad4d934afa0c1f090a32aaa934d6',1,'AVLTree']]]
 ];

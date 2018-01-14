@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['node',['Node',['../struct_a_v_l_tree_1_1_node.html',1,'AVLTree::Node'],['../struct_a_v_l_tree_1_1_node.html#ac1c9081097190bb873431187252fd0ac',1,'AVLTree::Node::Node(const int)'],['../struct_a_v_l_tree_1_1_node.html#a16715f5aa113abf6697cf0f426c8cac2',1,'AVLTree::Node::Node(const int, Node *, Node *)']]]
+  ['testtesting',['testTesting',['../class_a_v_l_tree.html#a4db58e9dad775a1fc0c426c6d81582b8',1,'AVLTree']]]
 ];
