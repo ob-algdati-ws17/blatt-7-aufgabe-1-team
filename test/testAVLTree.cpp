@@ -230,7 +230,7 @@ TEST(AVLTest, Two_Node_Insert_Remove_UnkownNode){
     EXPECT_TRUE(tree.search(557));
     EXPECT_FALSE(tree.search(400));
 }
-/*
+
 
 TEST(AVLTest, Order_Of_Elemente_After_Root_Deletion){
     AVLTree tree;
@@ -324,7 +324,7 @@ TEST(AVLTest, Symfollower_Is_Right_Son){
     tree.remove(tree.getRoot(), 55);
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 40));
 }
-
+/*
 TEST(AVLTest, Random_Node_Insert_Random_Remove){
     AVLTree tree;
     srand(time(NULL));
