@@ -13,7 +13,7 @@ TEST(AVLTest, Check_if_testing_works) {
     AVLTree tree;
     EXPECT_TRUE(tree.testTesting());
 }
-/*
+
 
 // empty tree
 TEST(AVLTest, Test_EmptyList) {
@@ -108,7 +108,7 @@ TEST(AVLTest, FiveThousand_Nodes_Insert){
         EXPECT_TRUE(tree.search(i));
     }
 }
-
+/*
 TEST(AVLTest, One_Node_Insert_Remove){
     AVLTree tree;
     tree.insert(55789);
