@@ -24,7 +24,11 @@ bool AVLTree::isEmpty() {
     return root == nullptr;
 }
 
-
+/**
+ * Used for testing the balance of every node.
+ * @param root -> the root element the balance is checked
+ * @return -> true if every balance is <2 and >-2
+ */
 bool AVLTree::checkBalance(Node *root) {
     {
         int lh; /* for height of left subtree */
@@ -48,7 +52,10 @@ bool AVLTree::checkBalance(Node *root) {
     }
 }
 
-
+/**
+ * returns the root of the tree
+ * @return the root nde
+ */
 AVLTree::Node *AVLTree::getRoot() {
     return root;
 }
