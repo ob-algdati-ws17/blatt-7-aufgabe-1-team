@@ -452,13 +452,15 @@ void AVLTree::removeTwoLeaves(Node *pos, const int value) {
 void AVLTree::removeOneLeaves(Node *pos, const int value) {
     //son is on the right side
     if (pos->right != nullptr) {
+        //check if node to delete is root
         if (pos == root) {
             root = pos->right;
             root->prev = nullptr;
             root->balance = 0;
             return;
         }
-
+        //change position of right sons key and node to delete key
+        //afterwards delete the right son and call upout
         int helper = pos->key;
         pos->key = pos->right->key;
         pos->right->key = helper;
@@ -471,12 +473,15 @@ void AVLTree::removeOneLeaves(Node *pos, const int value) {
 
     //son is on the left side
     if (pos->left != nullptr) {
+        //Check if node to delete is root
         if (pos == root) {
             root = pos->left;
             root->prev = nullptr;
             root->balance = 0;
             return;
         }
+        //change position of left sons key and node to delete key
+        //afterwards delete the left son and call upout
         pos->balance = 0;
         int helper = pos->key;
         pos->key = pos->left->key;
