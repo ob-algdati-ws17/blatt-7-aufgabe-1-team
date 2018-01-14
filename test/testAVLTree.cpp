@@ -325,6 +325,31 @@ TEST(AVLTest, Symfollower_Is_Right_Son){
     EXPECT_THAT(*tree.preorder(), testing::ElementsAre(10, 5, 2, 57, 40));
 }
 
+TEST(AVLTest, Build_Tree_And_Delete_Afterwards){
+    AVLTree tree;
+    tree.insert(10);
+    tree.insert(5);
+    tree.insert(55);
+    tree.insert(2);
+    tree.insert(40);
+    tree.insert(57);
+    tree.insert(3);
+    tree.insert(60);
+    tree.insert(7);
+
+    tree.remove(tree.getRoot(), 57);
+    tree.remove(tree.getRoot(), 5);
+    tree.remove(tree.getRoot(), 10);
+    tree.remove(tree.getRoot(), 7);
+    tree.remove(tree.getRoot(), 60);
+    tree.remove(tree.getRoot(), 55);
+    tree.remove(tree.getRoot(), 2);
+    tree.remove(tree.getRoot(), 3);
+    tree.remove(tree.getRoot(), 40);
+
+    EXPECT_TRUE(tree.isEmpty());
+}
+
 
 
 
