@@ -108,7 +108,7 @@ TEST(AVLTest, FiveThousand_Nodes_Insert){
         EXPECT_TRUE(tree.search(i));
     }
 }
-/*
+
 TEST(AVLTest, One_Node_Insert_Remove){
     AVLTree tree;
     tree.insert(55789);
@@ -230,7 +230,7 @@ TEST(AVLTest, Two_Node_Insert_Remove_UnkownNode){
     EXPECT_TRUE(tree.search(557));
     EXPECT_FALSE(tree.search(400));
 }
-
+/*
 
 TEST(AVLTest, Order_Of_Elemente_After_Root_Deletion){
     AVLTree tree;
